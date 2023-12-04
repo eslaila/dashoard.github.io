@@ -7,7 +7,7 @@ import pandas as pd
 from jenkspy import jenks_breaks
 from branca.colormap import LinearColormap
 # Chemin vers le fichier SHP
-path_to_shapefile = "donnees\shp\OUTPUT1500.shp"
+path_to_shapefile = "dashboard/donnees/shp/OUTPUT1500.shp"
 
 # Charger les données à partir du fichier SHP
 gdf = gpd.read_file(path_to_shapefile)
