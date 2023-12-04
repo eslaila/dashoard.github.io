@@ -48,7 +48,12 @@ for attribut in ['temperature', 'pression_atmosph', 'pluviometrie']:
             st.warning(f"Column '{selected_column_day}' not found in the GeoDataFrame.")
 
 # Charger le raster correspondant à l'attribut sélectionné
-RASTERPATH = f"/dashboard/RASTERSclassifié/{selected_attribute}jour{selected_day}.tif"
+try:
+    with rio.open(RASTERPATH) as src:
+        RASTERPATH = f"/dashboard/RASTERSclassifié/{selected_attribute}jour{selected_day}.tif"
+except Exception as e:
+    print(f"Erreur lors de l'ouverture du fichier raster : {e}")
+
 ## LC08 RGB Image
 
 
