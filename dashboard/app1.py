@@ -15,7 +15,7 @@ st.set_page_config(
 
 st.markdown("<h2 style='font-size:32px; text-align:center;'>SLIDER </h2>", unsafe_allow_html=True)
 # Charger les données géospatiales depuis le fichier GeoParquet
-path_to_geoparquet = "donnees\geoparquet\OUTPUT1500.geoparquet"
+path_to_geoparquet = "dashboard/donnees/geoparquet/OUTPUT1500.geoparquet"
 gdf = gpd.read_parquet(path_to_geoparquet)
 # Sidebar pour la sélection de l'attribut
 selected_attribute = st.sidebar.selectbox("Sélectionner l'attribut", ['temperature', 'pression_atmosph', 'pluviometrie'])
