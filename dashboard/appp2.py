@@ -32,7 +32,7 @@ os.makedirs(output_folder, exist_ok=True)
 
 st.markdown("<h2 style='font-size:32px; text-align:center;'>TIMELAPSE </h2>", unsafe_allow_html=True)
 
-attributs = ['vitesse', 'temperature', 'pression']
+attributs = ['temperature', 'pression_atmosph', 'pluviometrie']
 selected_attribute = st.radio('Sélectionner un attribut :', attributs)
 
 # Utilisez des colonnes pour centrer la section de la boîte de sélection
