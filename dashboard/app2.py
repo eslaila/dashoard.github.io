@@ -14,10 +14,14 @@ import folium
 from branca.colormap import LinearColormap
 from streamlit_folium import folium_static
 import glob
-from PIL import Image, ImageDraw, ImageFont
+from PIL import Image, ImageDraw
 import imageio
-from branca.colormap import LinearColormap
 
+# Charger les données géospatiales depuis le fichier GeoParquet
+path_to_geoparquet = "C:\\Users\\hp\\Downloads\\OUTPUT1500.geoparquet"
+gdf = gpd.read_parquet(path_to_geoparquet)
+
+from branca.colormap import LinearColormap
 st.set_page_config(
     page_title="TIMELAPSE",
     page_icon="⏳",
@@ -30,7 +34,7 @@ os.makedirs(output_folder, exist_ok=True)
 
 
 st.markdown("<h2 style='font-size:32px; text-align:center;'>TIMELAPSE </h2>", unsafe_allow_html=True)
-st.write('voici en format GIF 🎞️ ')
+
 attributs = ['temperature', 'pression_atmosph', 'pluviometrie']
 selected_attribute = st.sidebar.selectbox("Sélectionner un attribut", attributs)
 def create_timelapse(image_files, DAY_names, duration):
@@ -45,12 +49,11 @@ def create_timelapse(image_files, DAY_names, duration):
             # Convertir en PIL Image
             pil_image = Image.fromarray(combined_image)
 
-            # Annoter l'image avec le nouveau texte
+            # Créer un objet de dessin
             draw = ImageDraw.Draw(pil_image)
 
             # Annoter chaque image avec les noms des jours
-            draw.text((0, 0), f'{selected_attribute}jour{DAY_names[i]}', fill='black', font=None)
-
+            draw.text((10, 10), f'{selected_attribute}jour{DAY_names[i]}', fill='black', font=None)
 
             # Ajouter l'image annotée à la liste
             images.append(np.array(pil_image))
@@ -62,7 +65,7 @@ def create_timelapse(image_files, DAY_names, duration):
 
 
 DAY_names = ['0', '1', '2', '3', '4', '5', '6']
-folder = "dashboard/RASTERSclassifié"
+folder = "C:\\Users\\hp\\Downloads\\rasters"
 if selected_attribute=='temperature':
       min=0
       max=100
@@ -75,12 +78,12 @@ else:
 class_limits1 = np.linspace(min, max, num=6) 
     # Générer la liste des fichiers image
 
-image_files = sorted(glob.glob(f"{folder}//{selected_attribute.lower()}jour*.tif"))
+image_files = sorted(glob.glob(f"{folder}\\{selected_attribute.lower()}jour*.tif"))
 
 create_timelapse(image_files, DAY_names, duration=1)
 first_image = image_files[0]
 with rio.open(first_image) as src:
-    bounds = [[src.bounds.bottom, src.bounds.left], [src.bounds.top, src.bounds.right]]
+        bounds = [[src.bounds.bottom, src.bounds.left], [src.bounds.top, src.bounds.right]]
 
 
 m = folium.Map(location=[28.7917, -9.6026], zoom_start=5)
@@ -91,7 +94,6 @@ gif_layer = folium.raster_layers.ImageOverlay(
     opacity=0.7,
     name='GIF Layer'
     ).add_to(m)
-
 colors = [
     (215, 25, 28),   #  la classe 1
     (253, 174, 97),    #  la classe 2
@@ -104,11 +106,11 @@ cmap.add_to(m)
 folium.LayerControl().add_to(m)
 folium_static(m ,width=1050, height=600)
 
-st.write('voici en format VIDEO 🎥 ')
+st.write('voici un video de TIMELAPSE ! ')
 video_frames = []
 for selected_day in range(0, 6):  # Include day 1 in the range
         # Charger le raster correspondant à l'attribut sélectionné
-        RASTERPATH = f"dashboard/RASTERSclassifié"
+        RASTERPATH = f"C:\\Users\\hp\\Downloads\\rasters\\{selected_attribute}jour{selected_day}.tif"
         
         ## LC08 RGB Image
         dst_crs = 'EPSG:4326'
@@ -119,8 +121,7 @@ for selected_day in range(0, 6):  # Include day 1 in the range
 
             src_crs = src.crs.to_string().upper()
             min_lon, min_lat, max_lon, max_lat = src.bounds
- 
- 
+
         ## Conversion from UTM to WGS84 CRS
         bounds_orig = [[min_lat, min_lon], [max_lat, max_lon]]
 
@@ -160,7 +161,7 @@ for selected_day in range(0, 6):  # Include day 1 in the range
         # Overlay raster (RGB) called img using add_child() function (opacity and bounding box set)
         m.add_child(folium.raster_layers.ImageOverlay(img.transpose(1, 2, 0), opacity=.7, 
                         bounds=bounds_fin))
-        path = f"RASTERSclassifié\\{selected_attribute}jour{selected_day}.tif"
+        path = f"C:\\Users\\hp\\Downloads\\rasters\\{selected_attribute}jour{selected_day}.tif"
 
         with rio.open(path) as src:
             data = src.read(1, masked=True)
