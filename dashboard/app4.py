@@ -11,17 +11,16 @@ path_to_geoparquet = "donnees\geoparquet\OUTPUT1500.geoparquet"
 gdf = gpd.read_parquet(path_to_geoparquet)
 
 st.set_page_config(
-    page_title="Ma Super Application",
-    page_icon="🌍",
-    layout="centered",  
+    page_title="POPUP Application",
+    page_icon="📈",
+    layout="wide",  
 )
 
-
-# Liste des attributs pour le choix
 attributs = ['temperature', 'pression_atmosph', 'pluviometrie']
 
 # Liste des jours pour le choix
 jours = [6, 5, 4, 3, 2, 1, 0]
+
 
 # Create a Folium map centered around the mean of the points
 m = folium.Map(location=[gdf.geometry.centroid.y.mean(), gdf.geometry.centroid.x.mean()], zoom_start=4)
@@ -29,12 +28,8 @@ m = folium.Map(location=[gdf.geometry.centroid.y.mean(), gdf.geometry.centroid.x
 marker_cluster = MarkerCluster().add_to(m)
 
 for index, row in gdf.iterrows():
-    marker = folium.CircleMarker(
+    marker = folium.Marker(
         location=[row['geometry'].y, row['geometry'].x],
-        radius=5,
-        color='blue',
-        fill=True,
-        fill_color='blue',
     ).add_to(marker_cluster)
 
     data = {
@@ -57,4 +52,5 @@ for index, row in gdf.iterrows():
     marker.add_to(marker_cluster)
 
     # Afficher la carte dans Streamlit
-folium_static(m ,width=1000, height=600)
+st.markdown('<h2 style="text-align: center;">POPUP</h2>', unsafe_allow_html=True)
+folium_static(m ,width=1350, height=600)
