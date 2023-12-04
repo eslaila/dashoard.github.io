@@ -7,7 +7,7 @@ from folium.plugins import MarkerCluster
 import streamlit as st
 
 # Charger les données géospatiales depuis le fichier GeoParquet
-path_to_geoparquet = "donnees\geoparquet\OUTPUT1500.geoparquet"
+path_to_geoparquet = "dashboard/donnees/geoparquet/OUTPUT1500.geoparquet"
 gdf = gpd.read_parquet(path_to_geoparquet)
 
 st.set_page_config(
