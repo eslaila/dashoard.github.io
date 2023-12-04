@@ -75,7 +75,7 @@ else:
 class_limits1 = np.linspace(min, max, num=6) 
     # Générer la liste des fichiers image
 
-image_files = sorted(glob.glob(f"{folder}\\{selected_attribute.lower()}jour*.tif"))
+image_files = sorted(glob.glob(f"{folder}//{selected_attribute.lower()}jour*.tif"))
 
 create_timelapse(image_files, DAY_names, duration=1)
 first_image = image_files[0]
