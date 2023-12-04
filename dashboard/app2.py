@@ -53,7 +53,7 @@ def create_timelapse(image_files, DAY_names, duration):
             draw = ImageDraw.Draw(pil_image)
 
             # Annoter chaque image avec les noms des jours
-            draw.text((10, 10), f'{selected_attribute}jour{DAY_names[i]}', fill='black', font=None)
+            draw.text((10, 10), f'{selected_attribute}jour{DAY_names[i]}', fill='white', font=None)
 
             # Ajouter l'image annotée à la liste
             images.append(np.array(pil_image))
