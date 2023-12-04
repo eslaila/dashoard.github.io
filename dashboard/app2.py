@@ -6,22 +6,14 @@ from streamlit_folium import folium_static
 import numpy as np
 import rasterio 
 import glob
-import glob
-import rasterio
 import matplotlib.pyplot as plt
 from PIL import Image, ImageDraw
-import imageio
-
-from branca.colormap import LinearColormap
 st.set_page_config(
     page_title="TIMELAPSE",
     page_icon="⏳",
     layout="centered",  
 )
 
-import streamlit as st
-import geopandas as gpd
-import matplotlib.pyplot as plt
 import pandas as pd
 import contextily as ctx
 import numpy as np
@@ -31,13 +23,9 @@ import os
 from matplotlib.animation import FuncAnimation
 import rasterio as rio
 from pyproj import Transformer 
-import folium
-from branca.colormap import LinearColormap
-from streamlit_folium import folium_static
-import glob
 from PIL import Image, ImageDraw, ImageFont
 import imageio
-from branca.colormap import LinearColormap
+
 
 st.set_page_config(
     page_title="TIMELAPSE",
