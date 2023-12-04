@@ -48,7 +48,7 @@ for attribut in ['temperature', 'pression_atmosph', 'pluviometrie']:
             st.warning(f"Column '{selected_column_day}' not found in the GeoDataFrame.")
 
 # Charger le raster correspondant à l'attribut sélectionné
-RASTERPATH = f"RASTERSclassifié\cog{selected_attribute}jour{selected_day}.tif"
+RASTERPATH = f"cog{selected_attribute}jour{selected_day}.tif"
 ## LC08 RGB Image
 
 
