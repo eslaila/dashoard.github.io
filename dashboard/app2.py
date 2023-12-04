@@ -34,7 +34,7 @@ os.makedirs(output_folder, exist_ok=True)
 
 
 st.markdown("<h2 style='font-size:32px; text-align:center;'>TIMELAPSE </h2>", unsafe_allow_html=True)
-
+st.write('voici le GIF 🎞️ ')
 attributs = ['temperature', 'pression_atmosph', 'pluviometrie']
 selected_attribute = st.sidebar.selectbox("Sélectionner un attribut", attributs)
 def create_timelapse(image_files, DAY_names, duration):
@@ -105,98 +105,3 @@ cmap.caption = ' Légende'
 cmap.add_to(m)
 folium.LayerControl().add_to(m)
 folium_static(m ,width=1050, height=600)
-
-st.write('voici un video de TIMELAPSE ! ')
-video_frames = []
-for selected_day in range(0, 6):  # Include day 1 in the range
-        # Charger le raster correspondant à l'attribut sélectionné
-        RASTERPATH = f"dashboard/RASTERSclassifié//{selected_attribute}jour{selected_day}.tif"
-        
-        ## LC08 RGB Image
-        dst_crs = 'EPSG:4326'
-
-        with rio.open(RASTERPATH) as src:
-
-            img = src.read()
-
-            src_crs = src.crs.to_string().upper()
-            min_lon, min_lat, max_lon, max_lat = src.bounds
-
-        ## Conversion from UTM to WGS84 CRS
-        bounds_orig = [[min_lat, min_lon], [max_lat, max_lon]]
-
-        bounds_fin = []
-
-        for item in bounds_orig:   
-        #converting to lat/lon
-            lat = item[0]
-            lon = item[1]
-
-            proj = Transformer.from_crs(src_crs, dst_crs, always_xy=True)
-
-            lon_n, lat_n = proj.transform(lon, lat)
-
-            bounds_fin.append([lat_n, lon_n])
-
-        colors = [
-            (215, 25, 28),   #  la classe 1
-            (253, 174, 97),    #  la classe 2
-            (255, 255, 191),    #  la classe 3
-            (171, 221, 164),     #  la classe 4
-            (43, 131, 186) ]      #  la classe 5
-        
-
-
-        # Finding the centre latitude & longitude    
-        centre_lon = bounds_fin[0][1] + (bounds_fin[1][1] - bounds_fin[0][1])/2
-        centre_lat = bounds_fin[0][0] + (bounds_fin[1][0] - bounds_fin[0][0])/2
-
-        # Create Folium map without specifying tiles
-        m = folium.Map(location=[centre_lat, centre_lon], zoom_start=5)
-
-        # Ajout d'une couche de carte de base (par exemple, OpenStreetMap)
-        folium.TileLayer('openstreetmap').add_to(m)
-
-
-        # Overlay raster (RGB) called img using add_child() function (opacity and bounding box set)
-        m.add_child(folium.raster_layers.ImageOverlay(img.transpose(1, 2, 0), opacity=.7, 
-                        bounds=bounds_fin))
-        path = f"dashboard/RASTERSclassifié//{selected_attribute}jour{selected_day}.tif"
-
-        with rio.open(path) as src:
-            data = src.read(1, masked=True)
-            data = data.astype('float32', casting='same_kind')
-            cmap = LinearColormap(colors=colors, vmin = round(data.min(), 2),vmax = round(data.max(), 2))
-            cmap.caption = ' Légende'
-            cmap.add_to(m)
-
-        # Inside your loop where you append images to video_frames
-        img_bytes = m._to_png()
-        video_frames.append(np.asarray(Image.open(io.BytesIO(img_bytes)).convert('RGB')))
-
-
-        # Overlay raster (GeoTIFF) sur la carte
-        folium.raster_layers.ImageOverlay(img[0], opacity=0.7, bounds=bounds_fin).add_to(m)
-
-
-
-if video_frames:
-    # Create a timelapse video
-    output_folder = "timelapses"
-    video_path = os.path.join(output_folder, f"{attributs}_timelapse.mp4")
-    fig, ax = plt.subplots(figsize=(12, 8))
-    im = ax.imshow(video_frames[0])
-
-    def update(frame):
-        im.set_array(video_frames[frame])
-        return [im]
-
-    ani = FuncAnimation(fig, update, frames=len(video_frames), blit=True)
-    ani.save(video_path, writer="ffmpeg", fps=1)
-
-    # Display the video
-    st.video(video_path)
-
-    # Remove the video file after displaying
-    if os.path.exists(video_path):
-        os.remove(video_path)
