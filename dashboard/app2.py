@@ -83,7 +83,7 @@ def create_timelapse(image_files, DAY_names, duration):
 
 
 DAY_names = ['0', '1', '2', '3', '4', '5', '6']
-folder = ""RASTERSclassifié""
+folder = "dashboard/RASTERSclassifié"
 if selected_attribute=='temperature':
       min=0
       max=100
@@ -129,7 +129,7 @@ st.write('voici en format VIDEO 🎥 ')
 video_frames = []
 for selected_day in range(0, 6):  # Include day 1 in the range
         # Charger le raster correspondant à l'attribut sélectionné
-        RASTERPATH = f""RASTERSclassifié""
+        RASTERPATH = f"dashboard/RASTERSclassifié"
         
         ## LC08 RGB Image
         dst_crs = 'EPSG:4326'
@@ -181,7 +181,7 @@ for selected_day in range(0, 6):  # Include day 1 in the range
         # Overlay raster (RGB) called img using add_child() function (opacity and bounding box set)
         m.add_child(folium.raster_layers.ImageOverlay(img.transpose(1, 2, 0), opacity=.7, 
                         bounds=bounds_fin))
-        path = f""RASTERSclassifié"\\{selected_attribute}jour{selected_day}.tif"
+        path = f"dashboard/RASTERSclassifié\\{selected_attribute}jour{selected_day}.tif"
 
         with rio.open(path) as src:
             data = src.read(1, masked=True)
