@@ -77,3 +77,6 @@ xyzservices==2023.10.1
 zipp==3.17.0
 Imageio==2.9.0
 leafmap==0.29.1
+pyautogui==0.9.53
+selenium==3.141.0
+reportlab==3.5.68
