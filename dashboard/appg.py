@@ -95,7 +95,7 @@ if filtered_data is not None and not isinstance(filtered_data, list) and not fil
        
         folium.CircleMarker(
             location=[row['geometry'].y, row['geometry'].x],
-            radius=10,  # Ajuster l'échelle pour la taille des symboles
+            radius=2,  # Ajuster l'échelle pour la taille des symboles
         
             color='blue',
             fill=True,
