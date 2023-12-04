@@ -65,7 +65,7 @@ def create_timelapse(image_files, DAY_names, duration):
 
 
 DAY_names = ['0', '1', '2', '3', '4', '5', '6']
-folder = "https://eslaila.github.io/webmapping.github.io"
+folder = "dashboard/RASTERSclassifié"
 if selected_attribute=='temperature':
       min=0
       max=100
