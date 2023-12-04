@@ -65,7 +65,7 @@ def create_timelapse(image_files, DAY_names, duration):
 
 
 DAY_names = ['0', '1', '2', '3', '4', '5', '6']
-folder = "C:\\Users\\hp\\Downloads\\rasters"
+folder = "dashboard//RASTERSclassifié"
 if selected_attribute=='temperature':
       min=0
       max=100
@@ -78,7 +78,7 @@ else:
 class_limits1 = np.linspace(min, max, num=6) 
     # Générer la liste des fichiers image
 
-image_files = sorted(glob.glob(f"{folder}\\{selected_attribute.lower()}jour*.tif"))
+image_files = sorted(glob.glob(f"{folder}//{selected_attribute.lower()}jour*.tif"))
 
 create_timelapse(image_files, DAY_names, duration=1)
 first_image = image_files[0]
@@ -110,7 +110,7 @@ st.write('voici un video de TIMELAPSE ! ')
 video_frames = []
 for selected_day in range(0, 6):  # Include day 1 in the range
         # Charger le raster correspondant à l'attribut sélectionné
-        RASTERPATH = f"C:\\Users\\hp\\Downloads\\rasters\\{selected_attribute}jour{selected_day}.tif"
+        RASTERPATH = f"dashboard//RASTERSclassifié//{selected_attribute}jour{selected_day}.tif"
         
         ## LC08 RGB Image
         dst_crs = 'EPSG:4326'
@@ -161,7 +161,7 @@ for selected_day in range(0, 6):  # Include day 1 in the range
         # Overlay raster (RGB) called img using add_child() function (opacity and bounding box set)
         m.add_child(folium.raster_layers.ImageOverlay(img.transpose(1, 2, 0), opacity=.7, 
                         bounds=bounds_fin))
-        path = f"C:\\Users\\hp\\Downloads\\rasters\\{selected_attribute}jour{selected_day}.tif"
+        path = f"dashboard//RASTERSclassifié//{selected_attribute}jour{selected_day}.tif"
 
         with rio.open(path) as src:
             data = src.read(1, masked=True)
