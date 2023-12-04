@@ -50,7 +50,7 @@ for attribut in ['temperature', 'pression_atmosph', 'pluviometrie']:
 # Charger le raster correspondant à l'attribut sélectionné
 try:
     with rio.open(RASTERPATH) as src:
-        RASTERPATH = f"https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selecte_day}.tif"
+        RASTERPATH = f"https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selected_day}.tif"
 except Exception as e:
     print(f"Erreur lors de l'ouverture du fichier raster : {e}")
 
