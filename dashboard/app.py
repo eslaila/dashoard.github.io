@@ -3,21 +3,26 @@ import geopandas as gpd
 import folium
 from streamlit_folium import folium_static
 import pandas as pd
+from jenkspy import jenks_breaks
 from branca.colormap import LinearColormap
-import numpy as np
 # Charger les données géospatiales depuis le fichier GeoParquet
-path_to_geoparquet = "donnees\geoparquet\OUTPUT1500.geoparquet"
+path_to_geoparquet = "D:\Bureau\projethajji\donnees\geoparquet\OUTPUT1500.geoparquet"
 gdf = gpd.read_parquet(path_to_geoparquet)
 
 st.set_page_config(
-    page_title="visualisation",
+    page_title="Visualisation",
     page_icon="🌍",
     layout="wide",  
 )
 
 # Titre de l'application
-st.markdown("<h2 style='font-size:32px;text-align:center;'>Visualisation des données </h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-size:32px;text-align:center;'>Une Carte de MAROC</h2>", unsafe_allow_html=True)
 
+
+def jenks_classifier(data, column, k=5):
+    values = data[column].values
+    breaks = jenks_breaks(values, k)
+    return breaks
 
 # Sidebar pour la sélection de l'option (Attribut/Propriété)
 option = st.sidebar.radio("Choisir une option", ("Attribut", "Propriété"))
@@ -36,8 +41,8 @@ if option == "Attribut":
     filtered_data = gdf[gdf[selected_column_day] >= 0]
 
     # Classer les valeurs en utilisant la méthode de Jenks
+    breaks = jenks_classifier(filtered_data, selected_column_day, k=5)
     
-    bins = np.linspace(filtered_data[selected_column_day].min(), filtered_data[selected_column_day].max(), num=6)
     # Créer une carte Folium centrée sur la moyenne des coordonnées des géométries
     m = folium.Map(location=[gdf['geometry'].centroid.y.mean(), gdf['geometry'].centroid.x.mean()], zoom_start=4)
 
@@ -47,10 +52,10 @@ if option == "Attribut":
         popup = f"{selected_column_day}: {row[selected_column_day]}"
         
         # Assigner une couleur en fonction de la classe Jenks
-        color = '#f1eef6' if row[selected_column_day] <= bins[1] else \
-                '#bdc9e1' if row[selected_column_day] <=bins[2] else \
-                '#74a9cf' if row[selected_column_day] <=bins[3] else \
-                '#2b8cbe' if row[selected_column_day] <=bins[4] else \
+        color = '#f1eef6' if row[selected_column_day] <= breaks[1] else \
+                '#bdc9e1' if row[selected_column_day] <= breaks[2] else \
+                '#74a9cf' if row[selected_column_day] <= breaks[3] else \
+                '#2b8cbe' if row[selected_column_day] <= breaks[4] else \
                 '#045a8d'  
 
         folium.CircleMarker(
@@ -62,6 +67,16 @@ if option == "Attribut":
             fill_color=color,
             fill_opacity=0.6,
         ).add_to(m)
+        if selected_attribute=='temperature':
+          min=0
+          max=100
+        elif selected_attribute=="pression_atmosph":
+           min=0
+           max=20
+        else:
+          min=0
+          max=50
+    
 
 else:
     # Liste des propriétés pour le choix
@@ -69,7 +84,7 @@ else:
     selected_property = st.sidebar.selectbox("Sélectionner une propriété", proprietes)
     min,max=0,1
     # Classer les valeurs en utilisant la méthode de Jenks
-    bins = np.linspace(gdf[selected_property].min(), gdf[selected_property].max(), num=6)
+    breaks = jenks_classifier(gdf, selected_property, k=5)
 
     # Créer une carte Folium centrée sur la moyenne des coordonnées des géométries
     m = folium.Map(location=[gdf['geometry'].centroid.y.mean(), gdf['geometry'].centroid.x.mean()], zoom_start=4)
@@ -82,10 +97,10 @@ else:
         popup = f"{selected_property}: {row[selected_property]}"
         
         # Assigner une couleur en fonction de la classe Jenks
-        color = '#f1eef6' if row[selected_property] <= bins[1] else \
-                '#bdc9e1' if row[selected_property] <=  bins[2] else \
-                '#74a9cf' if row[selected_property] <=  bins[3] else \
-                '#2b8cbe' if row[selected_property] <=  bins[4] else \
+        color = '#f1eef6' if row[selected_property] <= breaks[1] else \
+                '#bdc9e1' if row[selected_property] <= breaks[2] else \
+                '#74a9cf' if row[selected_property] <= breaks[3] else \
+                '#2b8cbe' if row[selected_property] <= breaks[4] else \
                 '#045a8d'
        
         value = row[selected_property]
@@ -99,9 +114,8 @@ else:
             fill_color=color,
             fill_opacity=0.6,
         ).add_to(m)
-
 colors=['#f1eef6','#bdc9e1','#74a9cf','#2b8cbe','#045a8d']    
-cmap = LinearColormap(colors=colors, vmin = round(bins.min(), 2),vmax = round(bins.max(), 2))
+cmap = LinearColormap(colors=colors, vmin = round(min, 2),vmax = round(max, 2))
 cmap.caption = ' Légende'
 cmap.add_to(m)
     # Afficher la carte dans Streamlit
