@@ -65,7 +65,7 @@ def create_timelapse(image_files, DAY_names, duration, output_filename):
             writer.append_data(image)
 
 DAY_names = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
-folder = f"https://imane-byte.github.io/NV/Nouveauxattributs"
+folder = f"dashboard/RASTERSclassifié"
 
 
 if selected_attribute == 'vitesse':
@@ -80,7 +80,7 @@ else:
 class_limits1 = np.linspace(vmin, vmax, num=5) 
 
 # Générer la liste des fichiers image
-image_files = [os.path.join(folder, f"{selected_attribute}_{day}.tif") for day in DAY_names]
+image_files = [os.path.join(folder, f"dashboard/RASTERSclassifié//{selected_attribute}_{day}.tif") for day in DAY_names]
 
 
 # Utiliser le nom de l'attribut dans le nom du fichier de sortie
