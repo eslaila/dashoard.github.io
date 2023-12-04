@@ -18,7 +18,7 @@ from PIL import Image, ImageDraw
 import imageio
 
 # Charger les données géospatiales depuis le fichier GeoParquet
-path_to_geoparquet = "C:\\Users\\hp\\Downloads\\OUTPUT1500.geoparquet"
+path_to_geoparquet = "dashboard/donnees/geoparquet/OUTPUT1500.geoparquet"
 gdf = gpd.read_parquet(path_to_geoparquet)
 
 from branca.colormap import LinearColormap
