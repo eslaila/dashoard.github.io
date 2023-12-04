@@ -47,12 +47,7 @@ for attribut in ['temperature', 'pression_atmosph', 'pluviometrie']:
         else:
             st.warning(f"Column '{selected_column_day}' not found in the GeoDataFrame.")
 
-# Charger le raster correspondant à l'attribut sélectionné
-try:
-    with rio.open(RASTERPATH) as src:
-        RASTERPATH = f"https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selected_day}.tif"
-except Exception as e:
-    print(f"Erreur lors de l'ouverture du fichier raster : {e}")
+RASTERPATH = f"https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selected_day}.tif"
 
 ## LC08 RGB Image
 
