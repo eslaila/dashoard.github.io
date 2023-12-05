@@ -2,29 +2,29 @@ import streamlit as st
 import numpy as np
 import leafmap.foliumap as leafmap
 st.set_page_config(
-    page_title="COG",
+    page_title="COG_SPLITMAP",
     page_icon="✂",
-    layout="wide",  
+    layout="centered",  
 )
-st.markdown("<h2 style='font-size:32px; text-align:center;'>Split_Map par cog </h2>", unsafe_allow_html=True)
+st.markdown("<h2 style='font-size:32px; text-align:center;'>Split_Map</h2>", unsafe_allow_html=True)
 
 m = leafmap.Map()
 # Sidebar pour la sélection de l'attribut
 selected_attribute = st.sidebar.selectbox("Sélectionner l'attribut", ['temperature', 'pression_atmosph', 'pluviometrie'])
 
 # Sidebar pour la sélection des jours
-selecte_day = st.sidebar.slider("Sélectionner le premier jour", 0, 6, 0 )
-
+selected_day_1 = st.sidebar.slider("Sélectionner le premier jour", 0, 6, 0 )
+selected_day_2 = st.sidebar.slider("Sélectionner le deuxième jour", 0, 6, 1)
 
 # Vérifier si les colonnes attributs existent pour les jours sélectionnés
-selected_column_day_1 = f'dashboard/RASTERSclassifié//{selected_attribute}jour{selecte_day}.tif'
-selected_column_day_2 = f'dashboard//cog{selected_attribute}jour{selecte_day}.tif'
+selected_column_day_1 = f'https://eslaila.github.io/dashoard.github.io//cog{selected_attribute}jour{selected_day_1}.tif'
+selected_column_day_2 = f'https://eslaila.github.io/dashoard.github.io//cog{selected_attribute}jour{selected_day_2}.tif'
 # Configurer et exécuter la boucle d'événements avec asyncio
 
 m.split_map(
         left_layer=selected_column_day_1 , right_layer=selected_column_day_2 ,
-        left_label=f'{selected_attribute}jour{selecte_day}',
-        right_label=f'cog{selected_attribute}jour{selecte_day}',
+        left_label=f'{selected_attribute}jour{selected_day_1}',
+        right_label=f'{selected_attribute}jour{selected_day_2}',
         left_position=  "topleft",
         right_position = "topright",
     )
