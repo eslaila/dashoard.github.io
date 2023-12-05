@@ -86,7 +86,7 @@ if option == "Attribut":
 
 else:
     # Liste des propriétés pour le choix
-    proprietes = [ 'humidité', 'Reflectance']
+    proprietes = [ 'humidité', 'Reflectanc']
     selected_property = st.sidebar.selectbox("Sélectionner une propriété", proprietes)
     min,max=0,1
     # Classer les valeurs en utilisant la méthode de Jenks
