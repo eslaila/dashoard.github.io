@@ -65,7 +65,7 @@ def main() :
             for image in images:
                 writer.append_data(image)
 
-    DAY_names = ['lundi', 'mardi', 'mercredi', 'jeudi', 'vendredi', 'samedi', 'dimanche']
+    DAY_names =[6, 5, 4, 3, 2, 1, 0]
     folder = f'https://eslaila.github.io/dashoard.github.io//'
 
 
