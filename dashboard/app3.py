@@ -18,8 +18,8 @@ selected_day_1 = st.sidebar.slider("Sélectionner le premier jour", 0, 6, 0 )
 selected_day_2 = st.sidebar.slider("Sélectionner le deuxième jour", 0, 6, 1)
 
 # Vérifier si les colonnes attributs existent pour les jours sélectionnés
-selected_column_day_1 = f'https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selected_day_1}.tif'
-selected_column_day_2 = f'https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selected_day_2}.tif'
+selected_column_day_1 = f'https://eslaila.github.io/dashoard.github.io//{selected_attribute}jour{selected_day_1}.tif'
+selected_column_day_2 = f'https://eslaila.github.io/dashoard.github.io//{selected_attribute}jour{selected_day_2}.tif'
 # Configurer et exécuter la boucle d'événements avec asyncio
 
 m.split_map(
