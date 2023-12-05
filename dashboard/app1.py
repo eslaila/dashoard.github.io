@@ -47,7 +47,7 @@ for attribut in ['temperature', 'pression_atmosph', 'pluviometrie']:
         else:
             st.warning(f"Column '{selected_column_day}' not found in the GeoDataFrame.")
 
-RASTERPATH = f"https://eslaila.github.io/webmapping.github.io//{selected_attribute}jour{selected_day}.tif"
+RASTERPATH = f"dashboard/RASTERSclassifié//{selected_attribute}jour{selected_day}.tif"
 
 ## LC08 RGB Image
 
@@ -92,7 +92,7 @@ m = folium.Map(location=[centre_lat, centre_lon], zoom_start=5)
 # Overlay raster (RGB) called img using add_child() function (opacity and bounding box set)
 m.add_child(folium.raster_layers.ImageOverlay(img.transpose(1, 2, 0), opacity=.7, 
                                               bounds=bounds_fin))
-path=f"dashboard/raster/{selected_attribute}jour{selected_day}.tif"
+path=f"dashboard/raster//{selected_attribute}jour{selected_day}.tif"
 with rio.open(path) as src:
     data = src.read(1, masked=True)
     data = data.astype('float32', casting='same_kind')
