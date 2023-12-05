@@ -15,7 +15,7 @@ st.set_page_config(
 
 st.markdown("<h2 style='font-size:32px; text-align:center;'>SLIDER </h2>", unsafe_allow_html=True)
 # Charger les données géospatiales depuis le fichier GeoParquet
-path_to_geoparquet = "dashboard/donnees/geoparquet/OUTPUT1500.geoparquet"
+path_to_geoparquet = "donnees\geoparquet\OUTPUT1500.geoparquet"
 gdf = gpd.read_parquet(path_to_geoparquet)
 # Sidebar pour la sélection de l'attribut
 selected_attribute = st.sidebar.selectbox("Sélectionner l'attribut", ['temperature', 'pression_atmosph', 'pluviometrie'])
@@ -48,7 +48,7 @@ for attribut in ['temperature', 'pression_atmosph', 'pluviometrie']:
             st.warning(f"Column '{selected_column_day}' not found in the GeoDataFrame.")
 
 # Charger le raster correspondant à l'attribut sélectionné
-RASTERPATH = f"cog{selected_attribute}jour{selected_day}.tif"
+RASTERPATH = f"https://eslaila.github.io/dashoard.github.io//cog{selected_attribute}jour{selected_day}.tif"
 ## LC08 RGB Image
 
 
@@ -92,7 +92,7 @@ m = folium.Map(location=[centre_lat, centre_lon], zoom_start=5)
 # Overlay raster (RGB) called img using add_child() function (opacity and bounding box set)
 m.add_child(folium.raster_layers.ImageOverlay(img.transpose(1, 2, 0), opacity=.7, 
                                               bounds=bounds_fin))
-path=f"{selected_attribute}jour{selected_day}.tif"
+path=f"raster\{selected_attribute}jour{selected_day}.tif"
 with rio.open(path) as src:
     data = src.read(1, masked=True)
     data = data.astype('float32', casting='same_kind')
