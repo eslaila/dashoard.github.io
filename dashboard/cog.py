@@ -17,8 +17,8 @@ selecte_day = st.sidebar.slider("Sélectionner le premier jour", 0, 6, 0 )
 
 
 # Vérifier si les colonnes attributs existent pour les jours sélectionnés
-selected_column_day_1 = f'dashboard/RASTERSclassifié////{selected_attribute}jour{selecte_day}.tif'
-selected_column_day_2 = f'dashboard////cog{selected_attribute}jour{selecte_day}.tif'
+selected_column_day_1 = f'dashboard/RASTERSclassifié//{selected_attribute}jour{selecte_day}.tif'
+selected_column_day_2 = f'dashboard//cog{selected_attribute}jour{selecte_day}.tif'
 # Configurer et exécuter la boucle d'événements avec asyncio
 
 m.split_map(
