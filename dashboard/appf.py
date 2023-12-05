@@ -119,24 +119,24 @@ else:
             fill_opacity=0.6,
         ).add_to(m)
         min,max=0,1
-    if search_button:
-        point_found = False
+if search_button:
+    point_found = False
 
-        if search_coords:
-            search_longitude, search_latitude = map(float, search_coords.split(','))
+    if search_coords:
+        search_longitude, search_latitude = map(float, search_coords.split(','))
 
-            for idx, row in gdf.iterrows():
-                if round(row['geometry'].x, 3) == round(search_longitude, 3) and round(row['geometry'].y, 3) == round(search_latitude, 3):
-                    point_found = True
-                    popup = f"Point trouvé aux coordonnées: {row['geometry'].x}, {row['geometry'].y}"
-                    folium.Marker(
-                        location=[row['geometry'].y, row['geometry'].x],
-                        popup=popup,
-                        icon=folium.Icon(color='green', icon='info-sign')
-                    ).add_to(m)
+        for idx, row in gdf.iterrows():
+            if round(row['geometry'].x, 3) == round(search_longitude, 3) and round(row['geometry'].y, 3) == round(search_latitude, 3):
+                point_found = True
+                popup = f"Point trouvé aux coordonnées: {row['geometry'].x}, {row['geometry'].y}"
+                folium.Marker(
+                    location=[row['geometry'].y, row['geometry'].x],
+                    popup=popup,
+                    icon=folium.Icon(color='green', icon='info-sign')
+                ).add_to(m)
 
-            if not point_found:
-                st.sidebar.write("Le point spécifié n'existe pas dans les données.")
+        if not point_found:
+            st.sidebar.write("Le point spécifié n'existe pas dans les données.")
 colors=['#f1eef6','#bdc9e1','#74a9cf','#2b8cbe','#045a8d']    
 cmap = LinearColormap(colors=colors, vmin = round(min, 2),vmax = round(max, 2))
 cmap.caption = ' Légende'
